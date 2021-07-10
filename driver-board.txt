@@ -30,6 +30,8 @@ CON802:
 
 CON804:
 
+VIN = 8-28VDC
+
 1 - VIN
 2 - VIN
 3 - VIN
@@ -48,10 +50,10 @@ CON805:
 5 - SDI
 6 - SCL
 7 - SDO
-8 - VDD
+8 - +5V
 9 - GND
-10 - NC
-11 - NC
+10 - +12V
+11 - GPIO
 
 SPI protocol:
 
