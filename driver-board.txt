@@ -1,0 +1,92 @@
+CON801:
+
+1.	VLED	2.	VLED	
+3.	VLED	4.	VLED
+5.	NC	6.	NC
+7.	LED1	8.	LED3
+9.	LED2	10.	LED4
+11.	LED5	12.	LED7
+13.	LED6	14.	LED8
+15.	LED9	16.	LED11
+17.	LED10	18.	LED12
+19.	LED13	20.	LED15	
+21.	LED14	22.	LED16
+23.	NC	24.	NC
+
+CON802:
+
+1.	VLED	2.	VLED	
+3.	VLED	4.	VLED	
+5.	NC	6.	NC	
+7.	LED17	8.	LED19	
+9.	LED18	10.	LED20	
+11.	LED21	12.	LED23	
+13.	LED22	14.	LED24	
+15.	LED25	16.	LED27	
+17.	LED26	18.	LED28	
+19.	LED29	20.	LED31		
+21.	LED30	22.	LED32	
+23.	NC	24.	NC
+
+CON804:
+
+1 - VIN
+2 - VIN
+3 - VIN
+4 - VIN
+5 - GND
+6 - GND
+7 - GND
+8 - GND
+
+CON805:
+
+1 - VSYNC
+2 - HSYNC
+3 - xCS
+4 - GND
+5 - SDI
+6 - SCL
+7 - SDO
+8 - VDD
+9 - GND
+10 - NC
+11 - NC
+
+SPI protocol:
+
+Write single register on one device:
+[DevAddr][RegAddr][Data]
+
+Write multiple bytes on one device:
+[DevAddr][NumBytes][Data1]..[DataN]
+
+Write multiple registers on one device:
+[DevAddr][NumBytes][RegN][RegN Data][RegN+1 Data]..[RegN+N Data]
+
+Write single register on multiple devices:
+[0x3F][RegAddr][Dev1Data]..[DevNData]
+
+Write multiple registers on multiple devices:
+[0x3F][RegBase][Dev1RegBase Data][Dev1RegBase+1 Data][Dev1RegBase+N Data][DevNRegBase Data][DevNRegBase+1 Data][DevNRegBase+N Data]
+
+DevAddr:
+0x00 - broadcast to all devices
+0x01-0x3E - individual devices
+0x3F - special broadcast
+
+
+
+Example SPI frames (Turn on all outputs):
+
+Unlock all registers:
+[0x00][0x36][0x03]
+
+Set PWMCTRL to default:
+[0x00][0x13][0x00]
+
+Set CUR_ON1, CUR_ON2, Fault_1, GPIO_CTRL:
+[0x00][0x04][0x01][0xFF][0xFF][0x00][0x01]
+
+Lock all registers:
+[0x00][0x36][0x00]

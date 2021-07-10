@@ -1,0 +1,1 @@
+void printHexString(char* data);
