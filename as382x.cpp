@@ -4,14 +4,6 @@
 #include <Arduino.h>
 
 /*
- * Checks if a value is between two given values.
- */
-bool inRange(unsigned minValue, unsigned maxValue, unsigned curValue)
-{
-  return((curValue - minValue) <= (maxValue - minValue));
-}
-
-/*
  *  Sets the PWM parameters, given the chip address, channel, period, relative delay, and high time. 
  */
 void setPwmParams(uint8_t chipAddr, int channel, long period, long delayValue, long highTime)
