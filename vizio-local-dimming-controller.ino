@@ -6,11 +6,6 @@
 
 #include "as382x.h"
 
-void setup()
-{
-  Serial.begin(115200);
-}
-
 char* readData;
 
 void init()
@@ -36,12 +31,17 @@ void init()
 
   // Re-lock registers.
   spiWriteSingleReg(0x00, LOCKUNLOCK, 0x00);
+  
+}
+
+void setup()
+{
+  Serial.begin(115200);
+  init(); 
 }
 
 void loop()
 {  
-  init();
-
   
   char* readData = spiRead(0x01, STATUS_REG, 1);
 
@@ -49,4 +49,5 @@ void loop()
   Serial.println(readData);
 
   delay(100);
+  
 }
