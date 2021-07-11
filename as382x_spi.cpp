@@ -1,15 +1,29 @@
-#include "spiInterface.h"
+#include "as382x.h"
+
+/*
+ * Notes on SPI interface:
+ * 
+ * There are two acceptable modes of connecting these boards together:
+ * 
+ * 1. PARALLEL MODE (fastest, not implemented in code): 
+ * All SDO, SDI, SCLK lines in parallel with one CS per board.
+ * 
+ * 2. DAISY CHAIN MODE (slower, but recommended): 
+ * SDO of one board connects to the SDI of the next board, then SDO of last board 
+ * and SDI of the first board connects to the Arduino, with all SCLK lines still in parallel,
+ * but all CS lines are now in parallel as well.
+ */
 
 void spiWriteData(char* data)
 {
   
-  digitalWrite(cs, LOW);
+  digitalWrite(PIN_xCS, LOW);
 
   for (int i = 0; i <= sizeof(data); i++) {
     SPI.transfer(data[i]);
   }
 
-  digitalWrite(cs, HIGH);
+  digitalWrite(PIN_xCS, HIGH);
   
 }
 
@@ -18,7 +32,7 @@ char* spiRead(uint8_t chipAddr, uint8_t baseReg, uint8_t numRegs)
 
   int overhead;
   
-  digitalWrite(cs, LOW);
+  digitalWrite(PIN_xCS, LOW);
 
   SPI.transfer(chipAddr);
   if (numRegs > 1) {
@@ -37,12 +51,12 @@ char* spiRead(uint8_t chipAddr, uint8_t baseReg, uint8_t numRegs)
     readData[i] = SPI.transfer(0x00);
   }
 
-  digitalWrite(cs, HIGH);
+  digitalWrite(PIN_xCS, HIGH);
 
   return readData;
 }
 
-void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t reg, char* regData)
+void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t reg, unsigned* regData)
 {   
   char data[numRegs + 3];
 
@@ -55,10 +69,11 @@ void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t reg, char* r
   }
 
   printHexString(data);
+  
   spiWriteData(data);
 }
 
-void spiWriteSingleReg(uint8_t chipAddr, uint8_t reg, uint8_t regData)
+void spiWriteSingleReg(uint8_t chipAddr, uint8_t reg, unsigned regData)
 {
   char data[5] = {
       chipAddr,

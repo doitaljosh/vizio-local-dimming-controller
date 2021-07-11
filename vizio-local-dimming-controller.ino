@@ -8,36 +8,19 @@
 
 char* readData;
 
-void init()
-{
-
-  // Provide a clock reference for the PWM generators
-  analogWrite(vsync, 127);
-  analogWriteFrequency(24000);
-
-  // Unlock registers
-  spiWriteSingleReg(0x00, LOCKUNLOCK, 0x03);
-
-  // CUR_ON_1, CUR_ON_2, FAULT_1, GPIO_CTRL register values respectively
-  char data[4] = {0xFF, 0xFF, 0x84, 0x01};
-
-  // Set current output states, fault modes, and GPIO states
-  spiWriteMultipleReg(0x00, 4, CUR_ON_1, data);
-  // Set PWM controller settings to defaults
-  spiWriteSingleReg(0x00, PWM_CTRL, 0x00);
-  
-  // Set PWM parameters
-  setPwmParams(0x00, 0, 2048, 2048, 0);
-
-  // Re-lock registers.
-  spiWriteSingleReg(0x00, LOCKUNLOCK, 0x00);
-  
-}
-
 void setup()
 {
+  
   Serial.begin(115200);
-  init(); 
+  
+  as382xPowerOn(); 
+
+  // Turn all 32 outputs on
+  setCurrentOutputState(0, 2, 0xFFFF);
+
+  // Set PWM parameters
+  setPwmParams(0, 0, 2048, 2048, 0);
+  
 }
 
 void loop()
