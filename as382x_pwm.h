@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 // Maximum values for PWM controller (12 bit)
 #define MAX_PWM_PD 8191
 #define MAX_PWM_DEL 4095
