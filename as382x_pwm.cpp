@@ -85,9 +85,7 @@ void setPwmParams(uint8_t chipAddr, int channel, long period, long delayValue, l
 
 void analogWriteAs382x(uint8_t chipAddr, int channel, int value)
 {
-  
-  regLockUnlock(chipAddr, 3);
-
+ 
   setPwmParams(
     chipAddr,
     channel,
@@ -96,6 +94,4 @@ void analogWriteAs382x(uint8_t chipAddr, int channel, int value)
     map(value, 0, 255, 0, PWM_DEFAULT_PERIOD)
   );
 
-  regLockUnlock(chipAddr, 0);
- 
 }
