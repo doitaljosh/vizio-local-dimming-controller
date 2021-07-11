@@ -2,6 +2,11 @@
 
 #include "as382x.h"
 
+/*
+ * @brief Lock and unlock registers
+ * @param chipAddr Chip address
+ * @param state 0: both locked, 1: group1 unlocked, 2: group2 unlocked, 3: both unlocked
+ */
 void regLockUnlock(uint8_t chipAddr, unsigned state)
 {
   
@@ -14,6 +19,12 @@ void regLockUnlock(uint8_t chipAddr, unsigned state)
   
 }
 
+/*
+ * @brief Set current output states
+ * @param chipAddr Chip address
+ * @param ctx 0: group1, 1: group2, 2: both groups
+ * @param state 16 bit value that maps to 16 channels
+ */
 void setCurrentOutputState(uint8_t chipAddr, int ctx, unsigned state)
 {
 
@@ -53,6 +64,12 @@ void setCurrentOutputState(uint8_t chipAddr, int ctx, unsigned state)
   
 }
 
+/*
+ * @brief Set control output states
+ * @param chipAddr Chip address
+ * @param dcdcState DC/DC coverter state
+ * @param mode3dState Mode3D output signal state
+ */
 void setGpioState(uint8_t chipAddr, bool dcdcState, bool mode3dState)
 {
 
@@ -70,6 +87,9 @@ void setGpioState(uint8_t chipAddr, bool dcdcState, bool mode3dState)
   
 }
 
+/*
+ * @brief Power on sequence
+ */
 void as382xPowerOn(void)
 {
   
@@ -88,6 +108,9 @@ void as382xPowerOn(void)
   
 }
 
+/*
+ * @brief Power off sequence
+ */
 void as382xPowerOff(void)
 {
 

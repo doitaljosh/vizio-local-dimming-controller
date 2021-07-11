@@ -1,7 +1,12 @@
 #include "as382x.h"
 
 /*
- *  Sets the PWM parameters, given the chip address, channel, period, relative delay, and high time. 
+ *  @brief Sets the PWM parameters
+ *  @param chipAddr Chip address
+ *  @param channel Output channel selection 0: all channels, 1-16: channels 1-16
+ *  @param period PWM period
+ *  @param delayValue Delay offset
+ *  @param highTime Amount of time per pulse that the signal stays high
  */
 void setPwmParams(uint8_t chipAddr, int channel, long period, long delayValue, long highTime)
 {
@@ -83,6 +88,12 @@ void setPwmParams(uint8_t chipAddr, int channel, long period, long delayValue, l
   
 }
 
+/*
+ * @brief Write to a PWM channel (Arduino compatibility)
+ * @param chipAddr Chip address
+ * @param channel Output channel selection 0: all channels, 1-16: channels 1-16
+ * @param value Duty cycle (mapped to 0-255)
+ */
 void analogWriteAs382x(uint8_t chipAddr, int channel, int value)
 {
  

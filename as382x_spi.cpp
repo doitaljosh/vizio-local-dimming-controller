@@ -14,6 +14,10 @@
  * but all CS lines are now in parallel as well.
  */
 
+/*
+ * @brief Write raw data to SPI bus
+ * @param data Raw data to write
+ */
 void spiWriteData(char* data)
 {
   
@@ -27,7 +31,13 @@ void spiWriteData(char* data)
   
 }
 
-char* spiRead(uint8_t chipAddr, uint8_t baseReg, uint8_t numRegs)
+/*
+ * @brief Read register(s) on SPI device
+ * @param chipAddr Chip address
+ * @param numRegs Number of registers to read from
+ * @param baseReg Register to read from. If multiple registers, the base one.
+ */
+char* spiRead(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg)
 {
 
   int overhead;
@@ -56,13 +66,18 @@ char* spiRead(uint8_t chipAddr, uint8_t baseReg, uint8_t numRegs)
   return readData;
 }
 
-void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t reg, unsigned* regData)
+/*
+ * @param Write to multiple registers on the SPI bus
+ * @param chipAddr Chip address
+ * @param numRegs Number of registers to write
+ */
+void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg, unsigned* regData)
 {   
   char data[numRegs + 3];
 
   data[0] = chipAddr;
   data[1] = numRegs;
-  data[2] = reg;
+  data[2] = baseReg;
 
   for (int i=0; i<=numRegs; i++) {
     data[i+3] = regData[i];
@@ -73,6 +88,12 @@ void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t reg, unsigne
   spiWriteData(data);
 }
 
+/*
+ * @brief Write to a single register on the SPI bus
+ * @param chipAddr Chip address
+ * @param reg Register to write to
+ * @param regData Data to write to register
+ */
 void spiWriteSingleReg(uint8_t chipAddr, uint8_t reg, unsigned regData)
 {
   char data[5] = {

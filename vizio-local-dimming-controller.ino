@@ -26,7 +26,7 @@ void setup()
 void loop()
 {  
   
-  char* readData = spiRead(0x01, STATUS_REG, 1);
+  char* readData = spiRead(0x01, 1, STATUS_REG);
 
   Serial.print("Status register value: ");
   Serial.println(readData);
