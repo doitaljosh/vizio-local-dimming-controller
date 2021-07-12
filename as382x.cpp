@@ -20,6 +20,26 @@ void regLockUnlock(uint8_t chipAddr, unsigned state)
 }
 
 /*
+ * @brief Returns a 4 byte array containing the ASIC's revision and ID.
+ * @param chipAddr Chip address
+ */
+char* getAsicId(uint8_t chipAddr)
+{
+
+  unsigned* idRegData = spiReadMultiReg(chipAddr, 2, ASIC_ID_LSB);
+
+  static char id[4] = {
+    idRegData[3] & 0x0F, // Revision number
+    idRegData[3] & 0xF0, // ASIC ID 0
+    idRegData[4] & 0x0F, // ASIC ID 1
+    idRegData[4] & 0xF0  // ASIC ID 2
+  };
+
+  return id;
+    
+}
+
+/*
  * @brief Set current output states
  * @param chipAddr Chip address
  * @param ctx 0: group1, 1: group2, 2: both groups
@@ -50,7 +70,7 @@ void setCurrentOutputState(uint8_t chipAddr, int ctx, unsigned state)
         
       };
       
-      spiWriteMultipleReg(chipAddr, 2, CUR_ON_1, states);
+      spiWriteMultiReg(chipAddr, 2, CUR_ON_1, states);
       break;
       
     }

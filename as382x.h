@@ -2,6 +2,7 @@
 #include "as382x_regdefs.h"
 #include "as382x_spi.h"
 #include "as382x_pwm.h"
+#include "as382x_fault_det.h"
 #include "pins.h"
 #include "utils.h"
 
@@ -18,6 +19,7 @@
 #define F_VSYNC_HZ 24000
 
 void regLockUnlock(uint8_t chipAddr, unsigned state);
+char* getAsicId(uint8_t chipAddr);
 void setCurrentOutputState(uint8_t chipAddr, int ctx, unsigned state);
 void setGpioState(uint8_t chipAddr, bool dcdcState, bool mode3dState);
 void as382xPowerOn(void);

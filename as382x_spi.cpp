@@ -15,29 +15,12 @@
  */
 
 /*
- * @brief Write raw data to SPI bus
- * @param data Raw data to write
- */
-void spiWriteData(char* data)
-{
-  
-  digitalWrite(PIN_xCS, LOW);
-
-  for (int i = 0; i <= sizeof(data); i++) {
-    SPI.transfer(data[i]);
-  }
-
-  digitalWrite(PIN_xCS, HIGH);
-  
-}
-
-/*
  * @brief Read register(s) on SPI device
  * @param chipAddr Chip address
  * @param numRegs Number of registers to read from
  * @param baseReg Register to read from. If multiple registers, the base one.
  */
-char* spiRead(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg)
+unsigned * spiReadMultiReg(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg)
 {
 
   int overhead;
@@ -55,7 +38,7 @@ char* spiRead(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg)
     overhead = 2;
   }
 
-  char readData[numRegs + overhead];
+  unsigned readData[numRegs + overhead];
 
   for (int i=0; i<=numRegs + overhead; i++) {
     readData[i] = SPI.transfer(0x00);
@@ -67,11 +50,53 @@ char* spiRead(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg)
 }
 
 /*
+ * @brief Read from a single register, returning a single byte
+ * @param chipAddr Chip address
+ * @param reg Register to read from
+ */
+unsigned spiReadSingleReg(uint8_t chipAddr, uint8_t reg)
+{
+  int overhead = 3;
+
+  digitalWrite(PIN_xCS, LOW);
+
+  SPI.transfer(chipAddr);
+  SPI.transfer(reg);
+
+  for (int i=0; i<overhead; i++) {
+    SPI.transfer(0x00);
+  }
+
+  unsigned readData = SPI.transfer(0x00);
+
+  digitalWrite(PIN_xCS, HIGH);
+
+  return readData;
+}
+
+/*
+ * @brief Write raw data to SPI bus
+ * @param data Raw data to write
+ */
+void spiWriteData(char* data)
+{
+  
+  digitalWrite(PIN_xCS, LOW);
+
+  for (int i = 0; i <= sizeof(data); i++) {
+    SPI.transfer(data[i]);
+  }
+
+  digitalWrite(PIN_xCS, HIGH);
+  
+}
+
+/*
  * @param Write to multiple registers on the SPI bus
  * @param chipAddr Chip address
  * @param numRegs Number of registers to write
  */
-void spiWriteMultipleReg(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg, unsigned* regData)
+void spiWriteMultiReg(uint8_t chipAddr, uint8_t numRegs, uint8_t baseReg, unsigned* regData)
 {   
   char data[numRegs + 3];
 

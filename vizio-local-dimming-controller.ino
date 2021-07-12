@@ -20,17 +20,27 @@ void setup()
 
   // Set PWM parameters
   setPwmParams(0, 0, 2048, 2048, 0);
-  
+
+  sequence(500);
+}
+
+void sequence(int interval)
+{
+  while(1)
+  {
+    setCurrentOutputState(0, 2, 0x5555);
+    delay(interval);
+    setCurrentOutputState(0, 2, 0xAAAA);
+    delay(interval);  
+
+    Serial.print("Open LED's on chip 1: ");
+    Serial.print(getOpenLeds(1), HEX);
+    Serial.print(", chip 2: ");
+    Serial.println(getOpenLeds(2), HEX);
+  }
 }
 
 void loop()
 {  
-  
-  char* readData = spiRead(0x01, 1, STATUS_REG);
-
-  Serial.print("Status register value: ");
-  Serial.println(readData);
-
-  delay(100);
   
 }
